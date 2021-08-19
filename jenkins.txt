@@ -1,0 +1,17 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Fetch Code from GIT') {
+            steps {
+                git branch: 'main', url: 'https://github.com/santoshmohapatra77/webproject.git'
+            }
+        }
+        stage('Copy code to WS') {
+            steps {
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'WebServer', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '//var/www/html', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '**/*.html')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            }
+        }
+        
+    }
+}
